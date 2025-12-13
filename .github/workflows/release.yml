@@ -39,7 +39,7 @@ jobs:
         id: rename
         run: |
           case ${{ matrix.os }} in
-            'ubuntu-latest')
+            'ubuntu-22.04')
               mv dist/gitcollector dist/gitcollector-linux
               echo "asset_name=gitcollector-linux" >> $GITHUB_OUTPUT
               ;;
@@ -47,10 +47,10 @@ jobs:
               mv dist/gitcollector.exe dist/gitcollector-windows.exe
               echo "asset_name=gitcollector-windows.exe" >> $GITHUB_OUTPUT
               ;;
-            'macos-latest')
+            'macos-15')
               # macOS 通常使用 .app 目录，如果用 --onefile 则是单一文件
-              mv dist/gitcollector dist/gitcollector-macos
-              echo "asset_name=gitcollector-macos" >> $GITHUB_OUTPUT
+              mv dist/gitcollector dist/gitcollector-mac
+              echo "asset_name=gitcollector-mac" >> $GITHUB_OUTPUT
               ;;
           esac
         shell: bash # 确保在所有平台上使用 bash shell 运行 case 语句
