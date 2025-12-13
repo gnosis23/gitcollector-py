@@ -35,3 +35,13 @@ make test
 
 make build
 ```
+
+### Pre-Commit
+
+```bash
+uv tool install pre-commit --with pre-commit-uv
+# add ~/.local/bin to path
+
+pre-commit --version
+pre-commit install
+```
