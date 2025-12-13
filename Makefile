@@ -1,4 +1,4 @@
-.PHONY: run test lint
+.PHONY: run test lint format
 
 run:
 	uv run main.py
@@ -8,3 +8,6 @@ test:
 
 lint:
 	uv run ruff check .
+
+format:
+	uv run ruff format
