@@ -1,0 +1,62 @@
+name: Build Executable
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+    name: Build & Release
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install uv
+        run: pip install uv
+      - name: Install Dependencies
+        run: |
+          uv pip install pyinstaller
+          uv sync
+      - name: Build Executable (PyInstaller)
+        run: |
+          pyinstaller --onefile --name gitcollector main.py
+      - name: Rename Executable for Platform
+        id: rename
+        run: |
+          case ${{ matrix.os }} in
+            'ubuntu-latest')
+              mv dist/gitcollector dist/gitcollector-linux
+              echo "asset_name=gitcollector-linux" >> $GITHUB_OUTPUT
+              ;;
+            'windows-latest')
+              mv dist/gitcollector.exe dist/gitcollector-windows.exe
+              echo "asset_name=gitcollector-windows.exe" >> $GITHUB_OUTPUT
+              ;;
+            'macos-latest')
+              # macOS 通常使用 .app 目录，如果用 --onefile 则是单一文件
+              mv dist/gitcollector dist/gitcollector-macos
+              echo "asset_name=gitcollector-macos" >> $GITHUB_OUTPUT
+              ;;
+          esac
+        shell: bash # 确保在所有平台上使用 bash shell 运行 case 语句
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.rename.outputs.asset_name }}
+          path: dist/${{ steps.rename.outputs.asset_name }}
+      - name: Create Release (if tag exists)
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/${{ steps.rename.outputs.asset_name }}
