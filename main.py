@@ -5,6 +5,7 @@ from collector.commit import (
     get_daily_commit_hours,
 )
 from collector.util import get_weekday
+from termcolor import colored
 
 
 def print_logo():
@@ -19,11 +20,16 @@ def print_blank():
     print("")
 
 
+def print_title(title: str):
+    print(colored(title, "cyan"))
+
+
 def main():
     print_logo()
 
+    # commmit count
     total_commit = count_commits()
-    print("commit count:")
+    print_title("commit count:")
     print(f"  {total_commit}")
     print_blank()
 
@@ -39,7 +45,8 @@ def main():
         "Sat",
     ]
 
-    print("commit group by weekday:")
+    # commit weekday
+    print_title("commit group by weekday:")
     for day in daily_commits:
         nth = get_weekday(day.date)
         count_by_weekday[nth] += day.count
@@ -53,7 +60,8 @@ def main():
     daily_hours = get_daily_commit_hours()
     total_hours = 0
 
-    print("commit group by hours:")
+    # commit hours
+    print_title("commit group by hours:")
     for commit in daily_hours:
         for key, val in commit.hours.items():
             count_by_hours[key] += 1
