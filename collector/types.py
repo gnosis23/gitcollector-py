@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(order=True)
 class DailyCommitCount:
     """
     定义每日提交计数的结构。
