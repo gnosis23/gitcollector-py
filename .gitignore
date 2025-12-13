@@ -6,6 +6,7 @@ dist/
 wheels/
 *.egg-info
 .pytest_*
+.ruff_*
 
 # Virtual environments
 .venv

@@ -7,4 +7,4 @@ test:
 	uv run pytest
 
 lint:
-	uv run pylint main.py ./collector
+	uv run ruff check .
