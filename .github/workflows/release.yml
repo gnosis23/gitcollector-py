@@ -31,7 +31,6 @@ jobs:
           fi
       - name: Install Dependencies
         run: |
-          uv pip install pyinstaller
           uv sync
       - name: Build Executable (PyInstaller)
         run: |
