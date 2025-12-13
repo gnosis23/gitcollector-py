@@ -23,14 +23,19 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install uv
-        run: pip install uv
+        run: |
+          pip install uv
+          uv venv
+          if [[ "$RUNNER_OS" != "Windows" ]]; then
+            source .venv/bin/activate
+          fi
       - name: Install Dependencies
         run: |
           uv pip install pyinstaller
           uv sync
       - name: Build Executable (PyInstaller)
         run: |
-          pyinstaller --onefile --name gitcollector main.py
+          .venv/bin/python -m PyInstaller --onefile --name gitcollector main.py
       - name: Rename Executable for Platform
         id: rename
         run: |
