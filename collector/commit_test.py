@@ -1,7 +1,12 @@
+"""
+collector.commit_test
+"""
+
 from .commit import parse_daily_commit_counts, parse_local_timestamp
 
 
 def test_parse_daily_commit_counts():
+    "test"
     output = """
     WANG <test@gmail.com>|2025-12-08|2025-12-08 21:35:21 +0800
     WANG <test@gmail.com>|2025-12-08|2025-12-08 21:28:39 +0800
@@ -15,6 +20,7 @@ def test_parse_daily_commit_counts():
 
 
 def test_parse_local_timestamp():
+    "test"
     timestamp = "2025-12-08T22:55:26"
     parsed = parse_local_timestamp(timestamp)
 
