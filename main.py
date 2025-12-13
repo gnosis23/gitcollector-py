@@ -56,6 +56,7 @@ def main():
 
     print_blank()
 
+    # commit hour
     count_by_hours = defaultdict(int)
     daily_hours = get_daily_commit_hours()
     total_hours = 0
@@ -69,6 +70,8 @@ def main():
     for i in range(24):
         percent = count_by_hours[i] / total_hours * 100 if total_hours else 0
         print(f"  {i:>2} clock   {count_by_hours[i]:>2} days ({percent:.2f}%)")
+
+    print_blank()
 
 
 if __name__ == "__main__":
