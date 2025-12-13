@@ -1,3 +1,7 @@
+"""
+type definitions
+"""
+
 from dataclasses import dataclass
 
 
@@ -26,6 +30,8 @@ class DailyCommitHours:
 
 @dataclass(order=True)
 class ParsedTimestamp:
-    dateKey: str
+    """parsed timestamp in git log"""
+
+    date_key: str
     hour: int
     minute: int

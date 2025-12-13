@@ -19,6 +19,6 @@ def test_parse_local_timestamp():
     parsed = parse_local_timestamp(timestamp)
 
     assert parsed
-    assert parsed.dateKey == "2025-12-08"
+    assert parsed.date_key == "2025-12-08"
     assert parsed.hour == 22
     assert parsed.minute == 55

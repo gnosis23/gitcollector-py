@@ -1,3 +1,7 @@
+"""
+some helpers in git
+"""
+
 from collections import defaultdict
 from datetime import datetime
 import subprocess
@@ -18,7 +22,7 @@ def count_commits() -> int:
         return counts
     except subprocess.CalledProcessError as e:
         print(f"failed to run, ${e.stderr}")
-        raise "get_daily_commit_counts failed"
+        raise e
 
 
 def get_daily_commit_counts() -> list[DailyCommitCount]:
@@ -35,10 +39,11 @@ def get_daily_commit_counts() -> list[DailyCommitCount]:
         return counts
     except subprocess.CalledProcessError as e:
         print(f"failed to run, ${e.stderr}")
-        raise "get_daily_commit_counts failed"
+        raise e
 
 
 def parse_daily_commit_counts(output: str) -> list[DailyCommitCount]:
+    """parse count from logs"""
     lines = output.split("\n")
     daily_counts = defaultdict(int)
 
@@ -81,10 +86,11 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
         return counts
     except subprocess.CalledProcessError as e:
         print(f"failed to run, ${e.stderr}")
-        raise "get_daily_commit_hours failed"
+        raise e
 
 
 def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
+    """parse hours from logs"""
     lines = output.split("\n")
     daily_hours = {}
 
@@ -103,9 +109,9 @@ def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
         if not parsed:
             continue
 
-        if parsed.dateKey not in daily_hours:
-            daily_hours[parsed.dateKey] = {}
-        daily_hours[parsed.dateKey][parsed.hour] = True
+        if parsed.date_key not in daily_hours:
+            daily_hours[parsed.date_key] = {}
+        daily_hours[parsed.date_key][parsed.hour] = True
 
     counts = []
     for key, val in daily_hours.items():
@@ -117,7 +123,7 @@ def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
 
 
 def parse_local_timestamp(timestamp: str) -> ParsedTimestamp:
-    # 尝试解析 YYYY-MM-DD HH:MM 格式
+    """尝试解析 YYYY-MM-DD HH:MM 格式"""
     try:
         dt_obj = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
     except ValueError:
@@ -130,5 +136,5 @@ def parse_local_timestamp(timestamp: str) -> ParsedTimestamp:
 
     # 成功解析，提取并返回数据
     return ParsedTimestamp(
-        dateKey=dt_obj.strftime("%Y-%m-%d"), hour=dt_obj.hour, minute=dt_obj.minute
+        date_key=dt_obj.strftime("%Y-%m-%d"), hour=dt_obj.hour, minute=dt_obj.minute
     )

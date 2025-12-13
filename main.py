@@ -1,14 +1,19 @@
+"""
+@author wbh
+"""
+
 from collections import defaultdict
+from termcolor import colored
 from collector.commit import (
     count_commits,
     get_daily_commit_counts,
     get_daily_commit_hours,
 )
 from collector.util import get_weekday
-from termcolor import colored
 
 
 def print_logo():
+    """print logo"""
     print("")
     print("------------------------------------------------------")
     print("                   Git Collector ")
@@ -17,14 +22,17 @@ def print_logo():
 
 
 def print_blank():
+    """print blank line"""
     print("")
 
 
 def print_title(title: str):
+    """print title"""
     print(colored(title, "cyan"))
 
 
 def main():
+    """main"""
     print_logo()
 
     # commmit count
@@ -64,7 +72,7 @@ def main():
     # commit hours
     print_title("commit group by hours:")
     for commit in daily_hours:
-        for key, val in commit.hours.items():
+        for key in commit.hours:
             count_by_hours[key] += 1
             total_hours += 1
     for i in range(24):

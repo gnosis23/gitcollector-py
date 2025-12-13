@@ -1,3 +1,7 @@
+"""
+some utils
+"""
+
 from datetime import datetime
 
 
@@ -18,5 +22,5 @@ def get_weekday(date: str) -> int:
         target_weekday = (weekday + 1) % 7
 
         return target_weekday
-    except ValueError:
-        raise ValueError(f"Invalid date format ${date}")
+    except ValueError as exc:
+        raise ValueError(f"Invalid date format ${date}") from exc
