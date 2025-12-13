@@ -11,3 +11,21 @@ class DailyCommitCount:
 
     date: str
     count: int
+
+
+@dataclass(order=True)
+class DailyCommitHours:
+    """
+    定义每日提交小时的结构。
+    Date: YYYY-MM-DD 格式的字符串
+    """
+
+    date: str
+    hours: map
+
+
+@dataclass(order=True)
+class ParsedTimestamp:
+    dateKey: str
+    hour: int
+    minute: int

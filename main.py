@@ -1,5 +1,9 @@
 from collections import defaultdict
-from collector.commit import count_commits, get_daily_commit_counts
+from collector.commit import (
+    count_commits,
+    get_daily_commit_counts,
+    get_daily_commit_hours,
+)
 from collector.util import get_weekday
 
 
@@ -44,6 +48,19 @@ def main():
         print(f"  {weekdays[i]:<3} {count_by_weekday[i]:>4} times ({percent:.2f}%)")
 
     print_blank()
+
+    count_by_hours = defaultdict(int)
+    daily_hours = get_daily_commit_hours()
+    total_hours = 0
+
+    print("commit group by hours:")
+    for commit in daily_hours:
+        for key, val in commit.hours.items():
+            count_by_hours[key] += 1
+            total_hours += 1
+    for i in range(24):
+        percent = count_by_hours[i] / total_hours * 100 if total_hours else 0
+        print(f"  {i:>2} clock   {count_by_hours[i]:>2} days ({percent:.2f}%)")
 
 
 if __name__ == "__main__":

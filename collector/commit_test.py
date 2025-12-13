@@ -1,4 +1,4 @@
-from .commit import parse_daily_commit_counts
+from .commit import parse_daily_commit_counts, parse_local_timestamp
 
 
 def test_parse_daily_commit_counts():
@@ -12,3 +12,13 @@ def test_parse_daily_commit_counts():
     assert len(commit) == 1
     assert commit[0].date == "2025-12-08"
     assert commit[0].count == 4
+
+
+def test_parse_local_timestamp():
+    timestamp = "2025-12-08T22:55:26"
+    parsed = parse_local_timestamp(timestamp)
+
+    assert parsed
+    assert parsed.dateKey == "2025-12-08"
+    assert parsed.hour == 22
+    assert parsed.minute == 55
