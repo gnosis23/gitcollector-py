@@ -10,7 +10,7 @@ jobs:
     name: Build & Release
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-15]
+        os: [ubuntu-22.04, macos-15, macos-15-intel]
 
     runs-on: ${{ matrix.os }}
     permissions:
@@ -49,8 +49,13 @@ jobs:
               ;;
             'macos-15')
               # macOS 通常使用 .app 目录，如果用 --onefile 则是单一文件
-              mv dist/gitcollector dist/gitcollector-mac
-              echo "asset_name=gitcollector-mac" >> $GITHUB_OUTPUT
+              mv dist/gitcollector dist/gitcollector-mac-arm64
+              echo "asset_name=gitcollector-mac-arm64" >> $GITHUB_OUTPUT
+              ;;
+            'macos-15-intel')
+              # macOS 通常使用 .app 目录，如果用 --onefile 则是单一文件
+              mv dist/gitcollector dist/gitcollector-mac-intel
+              echo "asset_name=gitcollector-mac-intel" >> $GITHUB_OUTPUT
               ;;
           esac
         shell: bash # 确保在所有平台上使用 bash shell 运行 case 语句
