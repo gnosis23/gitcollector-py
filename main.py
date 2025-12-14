@@ -2,6 +2,8 @@
 @author wbh
 """
 
+import os
+import sys
 from rich.console import Console
 from rich.table import Table
 from collections import defaultdict
@@ -12,6 +14,14 @@ from collector.commit import (
     get_daily_commit_hours,
 )
 from collector.util import get_weekday
+
+
+def check_git():
+    """check .git exist"""
+    if os.path.exists(".git") and os.path.isdir(".git"):
+        return
+    print("not a git repository")
+    sys.exit(-1)
 
 
 def print_logo():
@@ -36,8 +46,9 @@ def print_title(title: str):
 def main():
     console = Console()
 
-    """main"""
     print_logo()
+
+    check_git()
 
     # commmit count
     total_commit = count_commits()
