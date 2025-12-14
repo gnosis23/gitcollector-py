@@ -93,7 +93,7 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
 def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
     """parse hours from logs"""
     lines = output.split("\n")
-    daily_hours: dict[str, dict[int, bool]] = {}
+    daily_hours: dict[str, set[int]] = {}
 
     for line in lines:
         trimmed = line.strip()
@@ -111,8 +111,8 @@ def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
             continue
 
         if parsed.date_key not in daily_hours:
-            daily_hours[parsed.date_key] = {}
-        daily_hours[parsed.date_key][parsed.hour] = True
+            daily_hours[parsed.date_key] = set()
+        daily_hours[parsed.date_key].add(parsed.hour)
 
     counts = []
     for key, val in daily_hours.items():
