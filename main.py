@@ -63,7 +63,7 @@ def main():
         nth = get_weekday(day.date)
         count_by_weekday[nth] += day.count
 
-    table = Table(show_header=True, header_style="bold magenta")
+    table = Table(show_header=True, header_style="bold magenta", box=None)
     table.add_column("Weekday")
     table.add_column("Count", justify="right")
     table.add_column("Percent", justify="right")
@@ -87,9 +87,9 @@ def main():
             count_by_hours[key] += 1
             total_hours += 1
 
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Clock", justify="right")
-    table.add_column("Days", justify="right")
+    table = Table(show_header=True, header_style="bold magenta", box=None)
+    table.add_column("Clock", justify="right", width=7)
+    table.add_column("Days", justify="right", width=5)
     table.add_column("Percent", justify="right")
 
     for i in range(24):
