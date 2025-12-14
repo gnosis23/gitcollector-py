@@ -1,4 +1,4 @@
-.PHONY: run test lint format type
+.PHONY: run test lint format type build
 
 run:
 	uv run main.py
@@ -14,3 +14,6 @@ format:
 
 type:
 	uv run mypy .
+
+build:
+	uv run PyInstaller --onefile --name pygitcollector main.py
