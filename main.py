@@ -2,6 +2,8 @@
 @author wbh
 """
 
+from rich.console import Console
+from rich.table import Table
 from collections import defaultdict
 from termcolor import colored
 from collector.commit import (
@@ -32,6 +34,8 @@ def print_title(title: str):
 
 
 def main():
+    console = Console()
+
     """main"""
     print_logo()
 
@@ -58,9 +62,17 @@ def main():
     for day in daily_commits:
         nth = get_weekday(day.date)
         count_by_weekday[nth] += day.count
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Weekday")
+    table.add_column("Count", justify="right")
+    table.add_column("Percent", justify="right")
+
     for i in range(7):
         percent = count_by_weekday[i] / total_commit * 100
-        print(f"  {weekdays[i]:<3} {count_by_weekday[i]:>5} times ({percent:.2f}%)")
+        table.add_row(str(weekdays[i]), str(count_by_weekday[i]), f"{percent:.2f}%")
+
+    console.print(table)
 
     print_blank()
 
@@ -69,15 +81,22 @@ def main():
     daily_hours = get_daily_commit_hours()
     total_hours = 0
 
-    # commit hours
     print_title("commit group by hours:")
     for commit in daily_hours:
         for key in commit.hours:
             count_by_hours[key] += 1
             total_hours += 1
+
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Clock", justify="right")
+    table.add_column("Days", justify="right")
+    table.add_column("Percent", justify="right")
+
     for i in range(24):
         percent = count_by_hours[i] / total_hours * 100 if total_hours else 0
-        print(f"  {i:>2} clock   {count_by_hours[i]:>4} days ({percent:.2f}%)")
+        table.add_row(f"{i:>2}", str(count_by_hours[i]), f"{percent:.2f}%")
+
+    console.print(table)
 
     print_blank()
 
