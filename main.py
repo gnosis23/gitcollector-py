@@ -4,8 +4,10 @@
 
 import os
 import sys
+import typing
 from rich.console import Console
 from rich.table import Table
+import typer
 from collections import defaultdict
 from termcolor import colored
 from collector.commit import (
@@ -43,7 +45,12 @@ def print_title(title: str):
     print(colored(title, "cyan"))
 
 
-def main():
+def main(locale: str = "en"):
+    """
+    Show statistics based on git.
+
+    If --locale is used, show some text in specified language.
+    """
     console = Console()
 
     print_logo()
@@ -57,7 +64,7 @@ def main():
     print_blank()
 
     daily_commits = get_daily_commit_counts()
-    count_by_weekday = defaultdict(int)
+    count_by_weekday: typing.DefaultDict[int, int] = defaultdict(int)
     weekdays = [
         "Sun",
         "Mon",
@@ -67,6 +74,16 @@ def main():
         "Fri",
         "Sat",
     ]
+    if locale == "zh":
+        weekdays = [
+            "星期日",
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+        ]
 
     # commit weekday
     print_title("commit group by weekday:")
@@ -88,7 +105,7 @@ def main():
     print_blank()
 
     # commit hour
-    count_by_hours = defaultdict(int)
+    count_by_hours: typing.DefaultDict[int, int] = defaultdict(int)
     daily_hours = get_daily_commit_hours()
     total_hours = 0
 
@@ -113,4 +130,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
