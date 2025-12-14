@@ -8,6 +8,7 @@ wheels/
 .pytest_*
 .ruff_*
 .mypy_*
+pygitcollector.spec
 
 # Virtual environments
 .venv
