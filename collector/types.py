@@ -25,7 +25,7 @@ class DailyCommitHours:
     """
 
     date: str
-    hours: map
+    hours: dict[int, bool]
 
 
 @dataclass(order=True)

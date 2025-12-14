@@ -1,4 +1,4 @@
-.PHONY: run test lint format
+.PHONY: run test lint format type
 
 run:
 	uv run main.py
@@ -11,3 +11,6 @@ lint:
 
 format:
 	uv run ruff format
+
+type:
+	uv run mypy .

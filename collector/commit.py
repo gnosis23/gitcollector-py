@@ -5,6 +5,7 @@ some helpers in git
 from collections import defaultdict
 from datetime import datetime
 import subprocess
+import typing
 from .types import DailyCommitCount, DailyCommitHours, ParsedTimestamp
 
 
@@ -45,7 +46,7 @@ def get_daily_commit_counts() -> list[DailyCommitCount]:
 def parse_daily_commit_counts(output: str) -> list[DailyCommitCount]:
     """parse count from logs"""
     lines = output.split("\n")
-    daily_counts = defaultdict(int)
+    daily_counts: typing.DefaultDict[str, int] = defaultdict(int)
 
     for line in lines:
         trimmed = line.strip()
@@ -92,7 +93,7 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
 def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
     """parse hours from logs"""
     lines = output.split("\n")
-    daily_hours = {}
+    daily_hours: dict[str, dict[int, bool]] = {}
 
     for line in lines:
         trimmed = line.strip()
@@ -122,7 +123,7 @@ def parse_daily_commit_hours(output: str) -> list[DailyCommitHours]:
     return counts
 
 
-def parse_local_timestamp(timestamp: str) -> ParsedTimestamp:
+def parse_local_timestamp(timestamp: str) -> ParsedTimestamp | None:
     """尝试解析 YYYY-MM-DD HH:MM 格式"""
     try:
         dt_obj = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
