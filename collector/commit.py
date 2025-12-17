@@ -13,7 +13,7 @@ def exec(command: list[str]) -> str:
     """
     运行另一个程序并返回输出
     """
-    return sh.git(command).strip()
+    return sh.git(*command)
 
 
 def count_commits() -> int:
@@ -37,7 +37,12 @@ def get_daily_commit_counts() -> list[DailyCommitCount]:
     获取每日提交数量
     """
     try:
-        command = ["log", "--format=%an <%ae>|%cd|%ai", "--date=format:%Y-%m-%d"]
+        command = [
+            "--no-pager",
+            "log",
+            "--format=%an <%ae>|%cd|%ai",
+            "--date=format:%Y-%m-%d",
+        ]
         output = exec(command)
 
         counts = parse_daily_commit_counts(output)
@@ -79,6 +84,7 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
     """
     try:
         command = [
+            "--no-pager",
             "log",
             "--format=%an <%ae>|%cd|%ai",
             "--date=format:%Y-%m-%dT%H:%M:%S",

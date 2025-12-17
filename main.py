@@ -63,6 +63,7 @@ def main(locale: str = "en"):
     print(f"  {total_commit}")
     print_blank()
 
+    # commit weekday
     daily_commits = get_daily_commit_counts()
     count_by_weekday: typing.DefaultDict[int, int] = defaultdict(int)
     weekdays = [
@@ -85,7 +86,6 @@ def main(locale: str = "en"):
             "星期六",
         ]
 
-    # commit weekday
     print_title("commit group by weekday:")
     for day in daily_commits:
         nth = get_weekday(day.date)
