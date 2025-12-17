@@ -2,18 +2,18 @@
 some helpers in git
 """
 
+import sh  # type: ignore
 from collections import defaultdict
 from datetime import datetime
-import subprocess
 import typing
 from .types import DailyCommitCount, DailyCommitHours, ParsedTimestamp
 
 
-def exec(command: list[str]):
+def exec(command: list[str]) -> str:
     """
     运行另一个程序并返回输出
     """
-    return subprocess.run(command, capture_output=True, text=True, check=True)
+    return sh.git(command).strip()
 
 
 def count_commits() -> int:
@@ -21,14 +21,13 @@ def count_commits() -> int:
     统计 commit 数量
     """
     try:
-        command = ["git", "rev-list", "--count", "HEAD"]
-        result = exec(command)
+        command = ["rev-list", "--count", "HEAD"]
+        output = exec(command)
 
-        output = result.stdout.strip()
         counts = int(output)
 
         return counts
-    except subprocess.CalledProcessError as e:
+    except sh.ErrorReturnCode as e:
         print(f"failed to run, ${e.stderr}")
         raise e
 
@@ -38,14 +37,13 @@ def get_daily_commit_counts() -> list[DailyCommitCount]:
     获取每日提交数量
     """
     try:
-        command = ["git", "log", "--format=%an <%ae>|%cd|%ai", "--date=format:%Y-%m-%d"]
-        result = exec(command)
+        command = ["log", "--format=%an <%ae>|%cd|%ai", "--date=format:%Y-%m-%d"]
+        output = exec(command)
 
-        output = result.stdout.strip()
         counts = parse_daily_commit_counts(output)
 
         return counts
-    except subprocess.CalledProcessError as e:
+    except sh.ErrorReturnCode as e:
         print(f"failed to run, ${e.stderr}")
         raise e
 
@@ -81,18 +79,16 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
     """
     try:
         command = [
-            "git",
             "log",
             "--format=%an <%ae>|%cd|%ai",
             "--date=format:%Y-%m-%dT%H:%M:%S",
         ]
-        result = exec(command)
+        output = exec(command)
 
-        output = result.stdout.strip()
         counts = parse_daily_commit_hours(output)
 
         return counts
-    except subprocess.CalledProcessError as e:
+    except sh.ErrorReturnCode as e:
         print(f"failed to run, ${e.stderr}")
         raise e
 
