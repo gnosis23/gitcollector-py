@@ -9,13 +9,20 @@ import typing
 from .types import DailyCommitCount, DailyCommitHours, ParsedTimestamp
 
 
+def exec(command: list[str]):
+    """
+    运行另一个程序并返回输出
+    """
+    return subprocess.run(command, capture_output=True, text=True, check=True)
+
+
 def count_commits() -> int:
     """
     统计 commit 数量
     """
     try:
         command = ["git", "rev-list", "--count", "HEAD"]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        result = exec(command)
 
         output = result.stdout.strip()
         counts = int(output)
@@ -32,7 +39,7 @@ def get_daily_commit_counts() -> list[DailyCommitCount]:
     """
     try:
         command = ["git", "log", "--format=%an <%ae>|%cd|%ai", "--date=format:%Y-%m-%d"]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        result = exec(command)
 
         output = result.stdout.strip()
         counts = parse_daily_commit_counts(output)
@@ -79,7 +86,7 @@ def get_daily_commit_hours() -> list[DailyCommitHours]:
             "--format=%an <%ae>|%cd|%ai",
             "--date=format:%Y-%m-%dT%H:%M:%S",
         ]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        result = exec(command)
 
         output = result.stdout.strip()
         counts = parse_daily_commit_hours(output)
