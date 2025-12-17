@@ -6,7 +6,7 @@ import sh  # type: ignore
 from collections import defaultdict
 from datetime import datetime
 import typing
-from .types import DailyCommitCount, DailyCommitHours, ParsedTimestamp
+from .mytypes import DailyCommitCount, DailyCommitHours, ParsedTimestamp
 
 
 def exec(command: list[str]) -> str:
