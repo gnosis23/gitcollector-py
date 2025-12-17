@@ -12,3 +12,6 @@ pygitcollector.spec
 
 # Virtual environments
 .venv
+
+# Other
+.claude/settings.local.json
