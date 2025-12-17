@@ -10,12 +10,12 @@ from rich.table import Table
 import typer
 from collections import defaultdict
 from termcolor import colored
-from collector.commit import (
+from collector import (
     count_commits,
     get_daily_commit_counts,
     get_daily_commit_hours,
+    get_weekday,
 )
-from collector.util import get_weekday
 
 
 def check_git():
