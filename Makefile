@@ -13,7 +13,7 @@ format:
 	uv run ruff format
 
 type:
-	uv run mypy .
+	uv run ty check
 
 build:
 	uv run PyInstaller --onefile --name pygitcollector main.py
